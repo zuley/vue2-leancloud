@@ -1,28 +1,16 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <hello></hello>
+  <div id="app" class="m-index">
+    <div class="nav">
+      <router-link to="/"><el-button type="success">首页</el-button></router-link>
+      <router-link to="/register"><el-button type="warning">注册</el-button></router-link>
+      <router-link to="/login"><el-button type="danger">登录</el-button></router-link>
+    </div>
+    <router-view></router-view>
   </div>
 </template>
 
-<script>
-import Hello from './components/Hello'
+<style lang="css">
+.m-index{ width: 400px; margin: 100px auto; }
+.m-index .nav{ line-height: 50px; text-align: center; margin-bottom: 10px; }
 
-export default {
-  name: 'app',
-  components: {
-    Hello
-  }
-}
-</script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
