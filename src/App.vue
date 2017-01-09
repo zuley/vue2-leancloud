@@ -11,6 +11,5 @@
 
 <style lang="css">
 .m-index{ width: 400px; margin: 100px auto; }
-.m-index .nav{ line-height: 50px; text-align: center; margin-bottom: 10px; }
-
+.m-index .nav{ line-height: 50px; margin-bottom: 10px; }
 </style>

@@ -12,7 +12,7 @@ import 'element-ui/lib/theme-default/index.css'
 import routerConfig from './routerConfig.js'
 
 // 导入 leancloud-storage
-import AV from 'leancloud-storage'
+import axios from 'axios'
 
 // 注册插件
 Vue.use(VueRouter)
@@ -26,7 +26,10 @@ const router = new VueRouter({
 // 初始化 leancloud-storage
 const appId = 'tAvJucJiPN9h2Jsa4dqUB23x-gzGzoHsz'
 const appKey = 'DSlKWiaPIY42HNQYNkSI0mDJ'
-AV.init({ appId, appKey })
+axios.defaults.headers['X-LC-Id'] = appId
+axios.defaults.headers['X-LC-Key'] = appKey
+axios.defaults.headers.post['Content-Type'] = 'application/json'
+axios.defaults.headers['X-LC-Session'] = window.localStorage.getItem('sessionToken')
 
 // 实例化根组件
 new Vue({

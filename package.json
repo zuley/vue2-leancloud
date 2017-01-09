@@ -13,8 +13,11 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "axios": "^0.15.3",
+    "element-ui": "^1.0.0-rc.9",
     "leancloud-storage": "^1.5.2",
-    "vue": "^2.0.1",
+    "qs": "^6.3.0",
+    "vue": "^2.0.0-rc.8",
     "vue-router": "^2.0.0-rc.7"
   },
   "devDependencies": {
@@ -32,7 +35,7 @@
     "connect-history-api-fallback": "^1.1.0",
     "cross-spawn": "^4.0.2",
     "css-loader": "^0.25.0",
-    "element-ui": "^1.0.6",
+    "element-ui": "^1.0.0-rc.9",
     "eslint": "^3.7.1",
     "eslint-config-standard": "^6.1.0",
     "eslint-friendly-formatter": "^2.0.5",
@@ -70,6 +73,7 @@
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
     "url-loader": "^0.5.7",
+    "vue": "^2.0.0-rc.8",
     "vue-loader": "^9.4.0",
     "vue-style-loader": "^1.0.0",
     "webpack": "^1.13.2",
