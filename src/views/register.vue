@@ -22,9 +22,20 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
+  // 进入路由时判断当前登录状态，已登录则跳转到首页
+  beforeRouteEnter (to, from, next) {
+    next(VM => {
+      if (VM.$AV.User.current()) {
+        console.log('当前登录')
+        VM.$router.push('/')
+      } else {
+        console.log('当前未登录')
+      }
+    })
+  },
   data () {
+    // 姓名验证
     let validatorName = function (rule, value, callback) {
       if (!value) {
         callback(new Error('请输入账号'))
@@ -34,6 +45,7 @@ export default {
         callback()
       }
     }
+    // 密码验证
     let validatorPass = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请输入密码'))
@@ -43,6 +55,7 @@ export default {
         callback()
       }
     }
+    //重复密码验证
     let validatorPass2 = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请输入确认密码'))
@@ -56,11 +69,13 @@ export default {
       }
     }
     return {
+      // 表单数据
       ruleForm: {
         name: '',
         password: '',
         password2: ''
       },
+      // 验证规则
       rules: {
         name: [
           { validator: validatorName, trigger: 'blur' }
@@ -75,31 +90,33 @@ export default {
     }
   },
   methods: {
+    // 提交函数
     handleSubmit () {
+      // 验证表单
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           console.log('验证通过')
-          axios.post('https://api.leancloud.cn/1.1/users', {
-            username: this.ruleForm.name,
-            password: this.ruleForm.password
-          }).then(data => {
-            console.log(data)
-            if (data.status === 201) {
-              this.$message('成功注册')
-              this.$router.push('/login')
-            }
+          let user = new this.$AV.User()
+          user.setUsername(this.ruleForm.name)
+          user.setPassword(this.ruleForm.password)
+          // 提交登录
+          user.signUp().then(loginedUser => {
+            console.log(loginedUser)
+            this.$message('成功注册')
+            // 注册成功后跳转到登录页面
+            this.$router.push('/login')
+          }, error => {
+            console.log(error)
           })
         } else {
           console.log('验证不通过')
         }
       })
     },
+    // 重置表单函数
     handleReset () {
       this.$refs.ruleForm.resetFields()
     }
   }
 }
 </script>
-
-<style lang="css">
-</style>

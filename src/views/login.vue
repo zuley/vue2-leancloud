@@ -11,7 +11,9 @@
         <el-input type="password" auto-complete="off" v-model="ruleForm.password" placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item>
+        <!-- 点击进行登录提交 -->
         <el-button type="primary" v-on:click="handleSubmit">登录</el-button>
+        <!-- 点击重置表单 -->
         <el-button v-on:click="handleReset">重置</el-button>
       </el-form-item>
     </el-form>
@@ -19,9 +21,20 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
+  // 进入路由时判断当前登录状态，已登录则跳转到首页
+  beforeRouteEnter (to, from, next) {
+    next(VM => {
+      if (VM.$AV.User.current()) {
+        console.log('当前登录')
+        VM.$router.push('/')
+      } else {
+        console.log('当前未登录')
+      }
+    })
+  },
   data () {
+    // 验证名字
     let validatorName = function (rule, value, callback) {
       if (!value) {
         callback(new Error('请输入账号'))
@@ -31,6 +44,7 @@ export default {
         callback()
       }
     }
+    // 验证密码
     let validatorPass = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请输入密码'))
@@ -56,29 +70,30 @@ export default {
     }
   },
   methods: {
+    // 表单提交
     handleSubmit () {
+      // 验证表单
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           console.log('验证通过')
-          axios.post('https://api.leancloud.cn/1.1/login', {
-            username: this.ruleForm.name,
-            password: this.ruleForm.password
-          }).then(data => {
-            console.log(data)
-            if (data.status === 200) {
-              this.$message('成功登录')
-              window.localStorage.setItem('sessionToken', data.data.sessionToken)
-              axios.defaults.headers['X-LC-Session'] = window.localStorage.getItem('sessionToken')
-              this.$router.push('/')
-            } else {
-              this.$message.error('登录错误，请检查输入')
-            }
+          // 调用SDK登录方法，执行登录过程
+          this.$AV.User.logIn(this.ruleForm.name, this.ruleForm.password).then(loginedUser => {
+            console.log(loginedUser)
+            this.$message('成功登录')
+            // 登录成功跳转到首页
+            this.$router.push('/')
+          }, error => {
+            console.log(error)
+            this.$message('登录失败，请重试')
+            // 登录失败清空表单
+            this.handleReset()
           })
         } else {
           console.log('验证不通过')
         }
       })
     },
+    // 重置表单
     handleReset () {
       this.$refs.ruleForm.resetFields()
     }
