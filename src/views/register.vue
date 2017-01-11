@@ -55,7 +55,7 @@ export default {
         callback()
       }
     }
-    //重复密码验证
+    // 重复密码验证
     let validatorPass2 = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请输入确认密码'))
